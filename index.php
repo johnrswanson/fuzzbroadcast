@@ -65,9 +65,9 @@
 		
 	if(str_replace("'","''", $_FILES[embed][name])!=''){
 		$embed=str_replace("'","''", $_FILES[embed][name]);
-		echo ' -> Adding file ';
+		echo ' -> Adding file. If this does not work, email john@red.yellow.blue<br> ';
 		$add="./files/".$embed;
-		echo $add;
+		//echo $add;
 		$i=0;
 		$query="Select * from podcast where embed = '".$embed."'";
 		foreach($dbh->query( $query ) as $row){
@@ -104,7 +104,7 @@
 	$title=str_replace("'","''", $t);
 	$description=str_replace("'","''", $_POST['description']);
 	
-	echo'Adding New Episode to Podcast';
+	echo'<br>Adding New Episode to Podcast<br>';
 	
 	$statement= $dbh->prepare("INSERT into podcast (title, description, embed) values (:title, :description, :embed )");
 	$statement->bindParam(':title', $title);
@@ -141,7 +141,8 @@ echo fwrite($file, $xmlhead);
 $item = '';
 $query="Select * from podcast";
 foreach($dbh->query( $query ) as $row){
-	$pubdate = date("r", mktime($row['date']));
+	$thedate=strtotime($row['date']);
+	$pubdate = date("r", $thedate);
 $item.='
 <item>
     <title>'.$row['title'].'</title>
